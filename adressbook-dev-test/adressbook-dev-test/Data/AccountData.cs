@@ -1,6 +1,6 @@
 ﻿namespace WebAddressbookTests
 {
-    class AccountData
+    public class AccountData
     {
         private string username;
         private string password;
