@@ -14,15 +14,20 @@ namespace WebAddressbookTests
 
         public void GoToGroupsPage()
         {
+            if (driver.Url == baseURL + "/addressbook/group.php"
+                && IsElementPresent(By.Name("new")))
+                return;
             driver.FindElement(By.LinkText("groups")).Click();
         }
 
-        public void OpenHomePage()
+        public void GoHomePage()
         {
-            driver.Navigate().GoToUrl(baseURL);
+            if (driver.Url == baseURL + "/addressbook")
+                return;
+            driver.Navigate().GoToUrl(baseURL + "/addressbook");
         }
 
-        public void GoToHomePage()
+        public void ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home")).Click();
         }

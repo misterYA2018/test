@@ -3,7 +3,7 @@
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModification : TestBase
+    public class GroupModification : AuthTestBase
     {
         [Test]
         public void GroupModificationTest()
@@ -14,6 +14,5 @@ namespace WebAddressbookTests
 
             app.Groups.Modify(1, newGroup);
         }
-
     }
 }

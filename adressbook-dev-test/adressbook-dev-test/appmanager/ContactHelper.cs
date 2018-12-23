@@ -1,5 +1,4 @@
-﻿using System;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace WebAddressbookTests
 {
@@ -19,26 +18,32 @@ namespace WebAddressbookTests
             FillContactForm(contact);
             SubmitCreation();
 
-            manager.Navigator.GoToHomePage();
+            manager.Navigator.ReturnToHomePage();
             return this;
         }
 
         public ContactHelper Modify(int index, ContactData newContact)
         {
+            if (CountRowsInTable < 1)
+                Create(new ContactData("Generated firstName", "Generated lastName"));
+
             InitContactModification(index);
             FillContactForm(newContact);
             SubmitModification();
 
-            manager.Navigator.GoToHomePage();
+            manager.Navigator.ReturnToHomePage();
             return this;
         }
 
         public ContactHelper Remove(int index)
         {
+            if (CountRowsInTable < 1)
+                Create(new ContactData("Generated firstName", "Generated lastName"));
+
             SelectContact(index);
             Remove();
 
-            manager.Navigator.GoToHomePage();
+            manager.Navigator.ReturnToHomePage();
             return this;
         }
 
@@ -77,12 +82,8 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName);
+            Type(By.Name("firstname"), contact.FirstName);
+            Type(By.Name("lastname"), contact.LastName);
 
             return this;
         }
@@ -99,6 +100,16 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("submit")).Click();
 
             return this;
+        }
+
+        public int CountRowsInTable
+        {
+            get
+            {
+                // -1, так как первая строка это шапка 
+                return driver.FindElement(By.TagName("tbody"))
+                               .FindElements(By.TagName("tr")).Count - 1;
+            }
         }
     }
 }

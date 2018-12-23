@@ -1,5 +1,4 @@
-﻿using System;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace WebAddressbookTests
 {
@@ -28,6 +27,10 @@ namespace WebAddressbookTests
         public GroupHelper Modify(int index, GroupData newGroup)
         {
             manager.Navigator.GoToGroupsPage();
+
+            if (CountRowsInTable < 1)
+                Create(new GroupData("Generated name"));
+
             SelectGroup(index);
             InitGroupModication();
             FillGroupForm(newGroup);
@@ -37,11 +40,14 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper Remove(int v)
+        public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
 
-            SelectGroup(v);
+            if (CountRowsInTable < 1)
+                Create(new GroupData("Generated name"));
+
+            SelectGroup(index);
             RemoveGroup();
             ReturnToGroupsPage();
 
@@ -84,15 +90,9 @@ namespace WebAddressbookTests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Click();
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
 
             return this;
         }
@@ -109,6 +109,15 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("submit")).Click();
 
             return this;
+        }
+
+
+        public int CountRowsInTable
+        {
+            get
+            {
+                return driver.FindElements(By.ClassName("group")).Count;
+            }
         }
     }
 }
