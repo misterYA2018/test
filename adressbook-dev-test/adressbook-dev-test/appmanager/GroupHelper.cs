@@ -28,9 +28,6 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToGroupsPage();
 
-            if (CountRowsInTable < 1)
-                Create(new GroupData("Generated name"));
-
             SelectGroup(index);
             InitGroupModication();
             FillGroupForm(newGroup);
@@ -43,9 +40,6 @@ namespace WebAddressbookTests
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
-
-            if (CountRowsInTable < 1)
-                Create(new GroupData("Generated name"));
 
             SelectGroup(index);
             RemoveGroup();
@@ -118,6 +112,14 @@ namespace WebAddressbookTests
             {
                 return driver.FindElements(By.ClassName("group")).Count;
             }
+        }
+
+        public bool TableIsEmpty(bool createIfEmpty)
+        {
+            if (CountRowsInTable < 1 && createIfEmpty)
+                Create(new GroupData("Generated firstName"));
+
+            return CountRowsInTable < 1;
         }
     }
 }

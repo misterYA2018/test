@@ -24,9 +24,6 @@ namespace WebAddressbookTests
 
         public ContactHelper Modify(int index, ContactData newContact)
         {
-            if (CountRowsInTable < 1)
-                Create(new ContactData("Generated firstName", "Generated lastName"));
-
             InitContactModification(index);
             FillContactForm(newContact);
             SubmitModification();
@@ -37,9 +34,6 @@ namespace WebAddressbookTests
 
         public ContactHelper Remove(int index)
         {
-            if (CountRowsInTable < 1)
-                Create(new ContactData("Generated firstName", "Generated lastName"));
-
             SelectContact(index);
             Remove();
 
@@ -110,6 +104,14 @@ namespace WebAddressbookTests
                 return driver.FindElement(By.TagName("tbody"))
                                .FindElements(By.TagName("tr")).Count - 1;
             }
+        }
+
+        public bool TableIsEmpty(bool createIfEmpty)
+        {
+            if (CountRowsInTable < 1 && createIfEmpty)
+                    Create(new ContactData("Generated firstName", "Generated lastName"));
+
+            return CountRowsInTable < 1;
         }
     }
 }
