@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System.Collections.Generic;
 
 namespace WebAddressbookTests
 {
@@ -43,7 +44,7 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectContact(int index)
         {
-            index += 1;
+            index += 2;
             driver.FindElement(By.XPath($"//table/tbody/tr[{index}]/td[1]")).Click();
 
             return this;
@@ -67,7 +68,8 @@ namespace WebAddressbookTests
         public ContactHelper InitContactModification(int index)
         {
             // + 1, так как первая строка - шапка таблицы
-            index += 1;
+            // + 1, чтобы индекс начинался с 0
+            index += 2;
 
             driver.FindElement(By.XPath($"//table/tbody/tr[{index}]/td[8]")).Click();
 
@@ -112,6 +114,32 @@ namespace WebAddressbookTests
                     Create(new ContactData("Generated firstName", "Generated lastName"));
 
             return CountRowsInTable < 1;
+        }
+
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+
+            manager.Navigator.GoHomePage();
+
+            var elements = driver.FindElement(By.TagName("tbody"))
+                               .FindElements(By.TagName("tr"));
+
+            var isHeader = true;
+
+            foreach (IWebElement element in elements)
+            {
+                if (isHeader)
+                {
+                    isHeader = false;
+                    continue;
+                }
+
+                var tds = element.FindElements(By.TagName("td"));
+                contacts.Add(new ContactData(tds[2].Text, tds[1].Text));
+            }
+
+            return contacts;
         }
     }
 }

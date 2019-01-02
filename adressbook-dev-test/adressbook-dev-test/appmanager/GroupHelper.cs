@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System.Collections.Generic;
 
 namespace WebAddressbookTests
 {
@@ -71,6 +72,8 @@ namespace WebAddressbookTests
 
         public GroupHelper SelectGroup(int index)
         {
+            index++;
+
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
             return this;
         }
@@ -120,6 +123,22 @@ namespace WebAddressbookTests
                 Create(new GroupData("Generated firstName"));
 
             return CountRowsInTable < 1;
+        }
+
+        public List<GroupData> GetGroupList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+
+            manager.Navigator.GoToGroupsPage();
+
+            var elements = driver.FindElements(By.CssSelector("span.group"));
+
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupData(element.Text));
+            }
+
+            return groups;
         }
     }
 }
