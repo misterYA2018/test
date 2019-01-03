@@ -20,15 +20,28 @@ namespace WebAddressbookTests
             newGroup.Footer = "Test footer new";
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
-            oldGroups[0].Name = newGroup.Name;
-            oldGroups.Sort();
+
+            var oldGroup = oldGroups[0];
 
             app.Groups.Modify(0, newGroup);
+
+            Assert.AreEqual(oldGroups.Count, app.Groups.CountRowsInTable);
+
+            oldGroups[0].Name = newGroup.Name;
+            oldGroups.Sort();
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
             newGroups.Sort();
 
             Assert.AreEqual(oldGroups, newGroups);
+
+            foreach(var group in newGroups)
+            {
+                if(group.Id == oldGroup.Id)
+                {
+                    Assert.AreEqual(oldGroup.Name, group.Name);
+                }
+            }
         }
     }
 }

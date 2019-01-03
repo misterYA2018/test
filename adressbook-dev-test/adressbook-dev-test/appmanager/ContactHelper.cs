@@ -116,30 +116,39 @@ namespace WebAddressbookTests
             return CountRowsInTable < 1;
         }
 
+        private List<ContactData> contactCache = null;
+
         public List<ContactData> GetContactList()
         {
-            List<ContactData> contacts = new List<ContactData>();
-
-            manager.Navigator.GoHomePage();
-
-            var elements = driver.FindElement(By.TagName("tbody"))
-                               .FindElements(By.TagName("tr"));
-
-            var isHeader = true;
-
-            foreach (IWebElement element in elements)
+            if(contactCache == null)
             {
-                if (isHeader)
+                contactCache = new List<ContactData>();
+
+                manager.Navigator.GoHomePage();
+
+                var elements = driver.FindElement(By.TagName("tbody"))
+                                   .FindElements(By.TagName("tr"));
+
+                var isHeader = true;
+
+                foreach (IWebElement element in elements)
                 {
-                    isHeader = false;
-                    continue;
+                    if (isHeader)
+                    {
+                        isHeader = false;
+                        continue;
+                    }
+
+                    var tds = element.FindElements(By.TagName("td"));
+                    contactCache.Add(new ContactData(tds[2].Text, tds[1].Text)
+                    {
+                        Id = tds[0].FindElement(By.TagName("input")).GetAttribute("id")
+                    });
                 }
-
-                var tds = element.FindElements(By.TagName("td"));
-                contacts.Add(new ContactData(tds[2].Text, tds[1].Text));
             }
+            
 
-            return contacts;
+            return contactCache;
         }
     }
 }

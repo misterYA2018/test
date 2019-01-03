@@ -12,13 +12,16 @@ namespace WebAddressbookTests
             var contact = new ContactData("TestName", "TestLastName");
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
-            oldContacts.Add(contact);
-            oldContacts.Sort();
 
             app.Contacts.Create(contact);
 
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.CountRowsInTable);
+
             List<ContactData> newContacts = app.Contacts.GetContactList();
             newContacts.Sort();
+
+            oldContacts.Add(contact);
+            oldContacts.Sort();
 
             Assert.AreEqual(oldContacts, newContacts);
         }
