@@ -44,8 +44,7 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectContact(int index)
         {
-            index += 2;
-            driver.FindElement(By.XPath($"//table/tbody/tr[{index}]/td[1]")).Click();
+            driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[0].Click();
 
             return this;
         }
@@ -54,6 +53,7 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
             driver.SwitchTo().Alert().Accept();
+            contactCache = null;
 
             return this;
         }
@@ -61,18 +61,14 @@ namespace WebAddressbookTests
         public ContactHelper SubmitModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
 
             return this;
         }
 
         public ContactHelper InitContactModification(int index)
         {
-            // + 1, так как первая строка - шапка таблицы
-            // + 1, чтобы индекс начинался с 0
-            index += 2;
-
-            driver.FindElement(By.XPath($"//table/tbody/tr[{index}]/td[8]")).Click();
-
+            driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[7].Click();
             return this;
         }
 
@@ -94,6 +90,7 @@ namespace WebAddressbookTests
         public ContactHelper SubmitCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            contactCache = null;
 
             return this;
         }
@@ -102,9 +99,7 @@ namespace WebAddressbookTests
         {
             get
             {
-                // -1, так как первая строка это шапка 
-                return driver.FindElement(By.TagName("tbody"))
-                               .FindElements(By.TagName("tr")).Count - 1;
+                return driver.FindElements(By.Name("entry")).Count;
             }
         }
 
@@ -126,19 +121,10 @@ namespace WebAddressbookTests
 
                 manager.Navigator.GoHomePage();
 
-                var elements = driver.FindElement(By.TagName("tbody"))
-                                   .FindElements(By.TagName("tr"));
-
-                var isHeader = true;
+                var elements = driver.FindElements(By.Name("entry"));
 
                 foreach (IWebElement element in elements)
                 {
-                    if (isHeader)
-                    {
-                        isHeader = false;
-                        continue;
-                    }
-
                     var tds = element.FindElements(By.TagName("td"));
                     contactCache.Add(new ContactData(tds[2].Text, tds[1].Text)
                     {
