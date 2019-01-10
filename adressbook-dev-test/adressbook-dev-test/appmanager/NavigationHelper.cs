@@ -20,7 +20,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.LinkText("groups")).Click();
         }
 
-        public void GoHomePage()
+        public void GoToHomePage()
         {
             if (driver.Url == baseURL + "/addressbook")
                 return;
