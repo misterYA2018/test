@@ -76,7 +76,7 @@ namespace WebAddressbookTests
 
             return new ContactData()
             {
-                Details = details,
+                Details = details.Replace("\r\n", ""),
             };
         }
 

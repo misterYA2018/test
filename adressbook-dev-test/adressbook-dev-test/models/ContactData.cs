@@ -112,16 +112,16 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    var text = string.IsNullOrEmpty(FirstName) ? "" : $"{FirstName} ";
-                    text += string.IsNullOrEmpty(LastName) ? "" : $"{LastName}\r\n";
-                    text += string.IsNullOrEmpty(Address) ? "\r\n" : $"{Address}\r\n\r\n";
+                    var text = string.IsNullOrEmpty(FirstName) ? "" : $"{FirstName}";
+                    text += string.IsNullOrEmpty(LastName) ? "" : $" {LastName}";
+                    text += string.IsNullOrEmpty(Address) ? "" : $"{Address}";
 
-                    text += string.IsNullOrEmpty(HomePhone) ? "" : $"H: {HomePhone}\r\n";
-                    text += string.IsNullOrEmpty(MobilePhone) ? "" : $"M: {MobilePhone}\r\n";
-                    text += string.IsNullOrEmpty(WorkPhone) ? "\r\n" : $"W: {WorkPhone}\r\n\r\n";
+                    text += string.IsNullOrEmpty(HomePhone) ? "" : $"H: {HomePhone}";
+                    text += string.IsNullOrEmpty(MobilePhone) ? "" : $"M: {MobilePhone}";
+                    text += string.IsNullOrEmpty(WorkPhone) ? "" : $"W: {WorkPhone}";
 
-                    text += string.IsNullOrEmpty(Email) ? "" : $"{Email}\r\n";
-                    text += string.IsNullOrEmpty(Email2) ? "" : $"{Email2}\r\n";
+                    text += string.IsNullOrEmpty(Email) ? "" : $"{Email}";
+                    text += string.IsNullOrEmpty(Email2) ? "" : $"{Email2}";
                     text += string.IsNullOrEmpty(Email3) ? "" : $"{Email3}";
 
                     return text;
