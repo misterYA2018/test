@@ -6,6 +6,8 @@ namespace WebAddressbookTests
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhone;
+        private string allEmail;
+
         private string details;
 
         public ContactData(string firstName, string lastName)
@@ -143,7 +145,28 @@ namespace WebAddressbookTests
             return Regex.Replace(phone, "[ -()]", "") + "\r\n";
         }
 
-        public string AllEmail { get; set; }
+        public string AllEmail
+        {
+            get
+            {
+                if (allEmail != null)
+                {
+                    return allEmail;
+                }
+                else
+                {
+                    var text = string.IsNullOrEmpty(Email) ? "" : $"{Email}";
+                    text += string.IsNullOrEmpty(Email2) ? "" : $"\r\n{Email2}";
+                    text += string.IsNullOrEmpty(Email3) ? "" : $"\r\n{Email3}";
+
+                    return text;
+                }
+            }
+            set
+            {
+                allEmail = value;
+            }
+        }
 
 
 
