@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfContactData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ContactData>
+    <FirstName>%K/XSK</FirstName>
+    <LastName>OTH</LastName>
+    <AllPhone />
+    <Details>%K/XSK OTH</Details>
+    <AllEmail />
+  </ContactData>
+  <ContactData>
+    <FirstName>@P[*P+%1</FirstName>
+    <LastName>J0#PL2</LastName>
+    <AllPhone />
+    <Details>@P[*P+%1 J0#PL2</Details>
+    <AllEmail />
+  </ContactData>
+  <ContactData>
+    <FirstName>JKYN-&gt;?</FirstName>
+    <LastName>RW]@;KP</LastName>
+    <AllPhone />
+    <Details>JKYN-&gt;? RW]@;KP</Details>
+    <AllEmail />
+  </ContactData>
+</ArrayOfContactData>
