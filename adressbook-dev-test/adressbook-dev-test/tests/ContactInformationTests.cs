@@ -8,14 +8,14 @@ namespace WebAddressbookTests
         [Test]
         public void ContactInformationTest()
         {
-            ContactData fromTable = app.Contacts.GetContactInformationFromTable(0);
-            ContactData fromForm = app.Contacts.GetContactInformationFromEditForm(0);
+            ContactData fromDb = ContactData.GetAll()[0];
+            ContactData fromTable = app.Contacts.GetContactInformationFromTable(fromDb.Id);
 
-            Assert.AreEqual(fromTable, fromForm);
+            Assert.AreEqual(fromDb, fromTable);
 
-            Assert.AreEqual(fromTable.Address, fromForm.Address);
-            Assert.AreEqual(fromTable.AllPhone, fromForm.AllPhone);
-            Assert.AreEqual(fromTable.AllEmail, fromForm.AllEmail);
+            Assert.AreEqual(fromDb.Address ?? "", fromTable.Address);
+            Assert.AreEqual(fromDb.AllPhone ?? "", fromTable.AllPhone);
+            Assert.AreEqual(fromDb.AllEmail ?? "", fromTable.AllEmail);
         }
     }
 } 

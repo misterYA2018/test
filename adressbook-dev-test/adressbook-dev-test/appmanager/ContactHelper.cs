@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
+using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -15,12 +16,12 @@ namespace WebAddressbookTests
             this.manager = manager;
         }
 
-        public ContactData GetContactInformationFromTable(int index)
+        public ContactData GetContactInformationFromTable(string contactId)
         {
             manager.Navigator.GoToHomePage();
 
-            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"));
-
+            IList<IWebElement> cells = driver.FindElement(By.Id($"{contactId}")).FindElement(By.XPath("./..")).FindElement(By.XPath("./..")).FindElements(By.TagName("td"));
+           
             string lastName = cells[1].Text;
             string firstName = cells[2].Text;
             string address = cells[3].Text;
@@ -66,11 +67,11 @@ namespace WebAddressbookTests
             };
         }
 
-        public ContactData GetContactDetails(int index)
+        public ContactData GetContactDetails(string contactId)
         {
             manager.Navigator.GoToHomePage();
 
-            OpenContactDetails(index);
+            OpenContactDetails(contactId);
 
             var details = driver.FindElement(By.Id("content")).Text;
 
@@ -80,9 +81,9 @@ namespace WebAddressbookTests
             };
         }
 
-        public void OpenContactDetails(int index)
+        public void OpenContactDetails(string contactId)
         {
-            driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[6].Click();
+            driver.FindElement(By.XPath($"//a[@href='view.php?id={contactId}']")).Click();
         }
 
         public ContactHelper Create(ContactData contact)
@@ -105,9 +106,28 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Modify(string oldContactId, ContactData newContact)
+        {
+            InitContactModification(oldContactId);
+            FillContactForm(newContact);
+            SubmitModification();
+
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
         public ContactHelper Remove(int index)
         {
             SelectContact(index);
+            Remove();
+
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper Remove(string contactId)
+        {
+            SelectContact(contactId);
             Remove();
 
             manager.Navigator.ReturnToHomePage();
@@ -141,6 +161,12 @@ namespace WebAddressbookTests
         public ContactHelper InitContactModification(int index)
         {
             driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[7].Click();
+            return this;
+        }
+
+        public ContactHelper InitContactModification(string contactId)
+        {
+            driver.FindElement(By.XPath($"//a[@href='edit.php?id={contactId}']")).Click();
             return this;
         }
 
@@ -214,5 +240,39 @@ namespace WebAddressbookTests
 
             return int.Parse(driver.FindElement(By.Id("search_count")).Text);
         }
+
+
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            ClearGroupFilter();
+            SelectContact(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
+
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        public void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void SelectContact(string id)
+        {
+            driver.FindElement(By.Id(id)).Click();
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
+
     }
 }

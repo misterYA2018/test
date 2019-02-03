@@ -4,11 +4,12 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using System;
 
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
         public static IEnumerable<GroupData> RandomGroupDataProvider()
         {
@@ -90,7 +91,7 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("GroupDataFromExcelFile")]
         public void GroupCreationTest(GroupData group)
         {
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
 
             app.Groups.Create(group);
 
@@ -99,7 +100,7 @@ namespace WebAddressbookTests
             oldGroups.Add(group);
             oldGroups.Sort();
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             newGroups.Sort();
 
             Assert.AreEqual(oldGroups, newGroups);
@@ -112,7 +113,7 @@ namespace WebAddressbookTests
             group.Header = "";
             group.Footer = "";
 
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
 
             app.Groups.Create(group);
 
@@ -120,10 +121,19 @@ namespace WebAddressbookTests
 
             oldGroups.Sort();
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             newGroups.Sort();
 
             Assert.AreEqual(oldGroups, newGroups);
+        }
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            foreach( var contact in GroupData.GetAll()[0].GetContacts())
+            {
+                Console.Out.WriteLine(contact);
+            }
         }
     }
 }
