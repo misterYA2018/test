@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.Generic;
 using System;
-using System.Text.RegularExpressions;
 using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
@@ -293,6 +292,11 @@ namespace WebAddressbookTests
         public void DeleteContactFromGroup()
         {
             driver.FindElement(By.Name("remove")).Click();
+        }
+
+        public void CreateContactInDB(ContactData contact)
+        {
+            ExecuteCmd($"insert into addressbook set firstname= '{contact.FirstName}', lastname = '{contact.LastName}'");
         }
     }
 }

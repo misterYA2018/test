@@ -15,12 +15,12 @@ namespace WebAddressbookTests
 
         public GroupHelper Create(GroupData group)
         {
-            manager.Navigator.GoToGroupsPage(); 
+            manager.Navigator.GoToGroupsPage();
 
             InitGroupCreation();
             FillGroupForm(group);
             SubmitCreation();
-            ReturnToGroupsPage(); 
+            ReturnToGroupsPage();
 
             return this;
         }

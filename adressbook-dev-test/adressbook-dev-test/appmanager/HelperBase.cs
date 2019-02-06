@@ -34,5 +34,16 @@ namespace WebAddressbookTests
                 return false;
             }
         }
+
+
+        public void ExecuteCmd(string cmd)
+        {
+            using (var db = new AddressBookDb())
+            {
+                var command = db.CreateCommand();
+                command.CommandText = cmd;
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

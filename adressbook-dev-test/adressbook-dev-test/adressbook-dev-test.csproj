@@ -91,6 +91,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="appmanager\ApplicationManager.cs" />
+    <Compile Include="appmanager\RelationHelper.cs" />
     <Compile Include="models\AddressBookDb.cs" />
     <Compile Include="models\GroupContactRelation.cs" />
     <Compile Include="tests\RemoveContactFromGroupTests.cs" />

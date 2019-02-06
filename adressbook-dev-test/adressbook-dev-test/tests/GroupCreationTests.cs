@@ -130,7 +130,7 @@ namespace WebAddressbookTests
         [Test]
         public void TestDBConnectivity()
         {
-            foreach( var contact in GroupData.GetAll()[0].GetContacts())
+            foreach ( var contact in GroupData.GetAll()[0].GetContacts())
             {
                 Console.Out.WriteLine(contact);
             }
