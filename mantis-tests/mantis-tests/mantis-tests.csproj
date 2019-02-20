@@ -78,13 +78,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="appmanager\LoginHelper.cs" />
     <Compile Include="appmanager\ApplicationManager.cs" />
     <Compile Include="appmanager\JamesHelper.cs" />
     <Compile Include="appmanager\FtpHelper.cs" />
     <Compile Include="appmanager\HelperBase.cs" />
     <Compile Include="appmanager\MailHelper.cs" />
+    <Compile Include="appmanager\ProjectHelper.cs" />
+    <Compile Include="appmanager\NavigatorHelper.cs" />
     <Compile Include="appmanager\RegistrationHelper.cs" />
     <Compile Include="appmanager\TelnetInterface.cs" />
+    <Compile Include="modal\ProjectData.cs" />
+    <Compile Include="tests\AuthTestBase.cs" />
+    <Compile Include="tests\ProjectRemoveTests.cs" />
+    <Compile Include="tests\ProjectCreationTests.cs" />
     <Compile Include="tests\AccountCreationTests.cs" />
     <Compile Include="modal\AccountData.cs" />
     <Compile Include="tests\TestBase.cs" />
