@@ -18,14 +18,17 @@ namespace mantis_tests
             var newProject = new ProjectData(GenerateRandomString(8));
 
             Assert.IsFalse(app.Project.Exist(newProject), "Проект с таким именем уже существует");
-            var countBefore = app.Project.CountRowsInTable;
+
+            var oldProjects = app.Project.GetProjectList();
+            oldProjects.Add(newProject);
+            oldProjects.Sort();
 
             app.Project.Create(newProject);
 
-            var countAfter = app.Project.CountRowsInTable;
+            var actualProjects = app.Project.GetProjectList();
+            actualProjects.Sort();
 
-            Assert.AreEqual(countBefore + 1, countAfter);
-            Assert.IsTrue(app.Project.Exist(newProject));
+            Assert.AreEqual(oldProjects, actualProjects);
         }
     }
 }

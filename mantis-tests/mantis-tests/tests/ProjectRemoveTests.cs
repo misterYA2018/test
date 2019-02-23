@@ -16,16 +16,17 @@ namespace mantis_tests
         [Test]
         public void TestProjectRemove()
         {
-            var projectForRemove = app.Project.GetRandomExistingProject();
+            var oldProjects = app.Project.GetProjectList();
 
-            var countBefore = app.Project.CountRowsInTable;
+            app.Project.Remove(oldProjects[0]);
 
-            app.Project.Remove(projectForRemove);
+            var actualProjects = app.Project.GetProjectList();
+            actualProjects.Sort();
 
-            var countAfter = app.Project.CountRowsInTable;
+            oldProjects.RemoveAt(0);
+            oldProjects.Sort();
 
-            Assert.AreEqual(countBefore - 1, countAfter);
-            Assert.IsFalse(app.Project.Exist(projectForRemove));
+            Assert.AreEqual(oldProjects, actualProjects);
         }
     }
 }

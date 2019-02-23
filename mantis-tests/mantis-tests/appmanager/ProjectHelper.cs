@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace mantis_tests
 {
@@ -106,6 +107,23 @@ namespace mantis_tests
         private ReadOnlyCollection<IWebElement> GetTableRows()
         {
             return driver.FindElement(By.TagName("tbody")).FindElements(By.TagName("tr"));
+        }
+
+        public List<ProjectData> GetProjectList()
+        {
+            manager.Navigator.GoToManagmentProjectPage();
+
+            var projects = new List<ProjectData>();
+
+            var elements = GetTableRows();
+
+            foreach (IWebElement element in elements)
+            {
+
+                projects.Add(new ProjectData(element.FindElements(By.TagName("a"))[0].Text));
+            }
+
+            return projects;
         }
     }
 }
