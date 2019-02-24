@@ -4,10 +4,13 @@ namespace mantis_tests
 {
     public class AuthTestBase : TestBase
     {
+        public AccountData Administrator { get; private set; }
+
         [SetUp]
         public void SetupLogin()
         {
-            app.Auth.Login(new AccountData("administrator", "root"));
+            Administrator = new AccountData("administrator", "root");
+            app.Auth.Login(Administrator);
         }
     }
 }

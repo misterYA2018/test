@@ -47,5 +47,6 @@ namespace mantis_tests
         public ProjectData() { }
 
         public string Name { get; set; }
+        public string Id { get; set; }
     }
 }

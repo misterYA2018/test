@@ -17,15 +17,15 @@ namespace mantis_tests
         {
             var newProject = new ProjectData(GenerateRandomString(8));
 
-            Assert.IsFalse(app.Project.Exist(newProject), "Проект с таким именем уже существует");
+            app.Project.RemoveIfExist(Administrator, newProject);
 
-            var oldProjects = app.Project.GetProjectList();
+            var oldProjects = app.API.GetProjectList(Administrator);
             oldProjects.Add(newProject);
             oldProjects.Sort();
 
             app.Project.Create(newProject);
 
-            var actualProjects = app.Project.GetProjectList();
+            var actualProjects = app.API.GetProjectList(Administrator);
             actualProjects.Sort();
 
             Assert.AreEqual(oldProjects, actualProjects);

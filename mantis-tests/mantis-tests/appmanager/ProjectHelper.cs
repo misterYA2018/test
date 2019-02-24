@@ -75,17 +75,15 @@ namespace mantis_tests
             driver.FindElements(By.XPath("//button[@type='submit']"))[0].Click();
         }
 
-        public bool Exist(ProjectData project)
+        public void RemoveIfExist(AccountData account, ProjectData project)
         {
-            var rows = GetTableRows();
+            var projects = manager.API.GetProjectList(account);
 
-            foreach ( var row in rows)
+            foreach (var p in projects)
             {
-                if(project.Name.Equals(row.FindElements(By.TagName("a"))[0].Text))
-                    return true;
+                if (project.Name.Equals(p.Name))
+                    manager.API.RemoveProject(account, p.Id);
             }
-
-            return false;
         }
 
         public int CountRowsInTable
@@ -96,12 +94,12 @@ namespace mantis_tests
             }
         }
 
-        public bool TableIsEmpty(bool createIfEmpty)
+        public bool TableIsEmpty(bool createIfEmpty, AccountData account)
         {
-            if (CountRowsInTable < 1 && createIfEmpty)
-                Create(new ProjectData("Generated project"));
+            if (manager.API.GetProjectList(account).Count < 1 && createIfEmpty)
+                manager.API.CreateProject(account, new ProjectData(TestBase.GenerateRandomString(8)));
 
-            return CountRowsInTable < 1;
+            return manager.API.GetProjectList(account).Count < 1;
         }
 
         private ReadOnlyCollection<IWebElement> GetTableRows()

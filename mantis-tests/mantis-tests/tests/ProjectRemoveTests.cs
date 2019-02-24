@@ -1,32 +1,34 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace mantis_tests
 {
     [TestFixture]
     public class ProjectRemoveTests : AuthTestBase
     {
+        List<ProjectData> projectBefore;
+
         [SetUp]
         public void SetUp()
         {
-            app.Navigator.GoToManagmentProjectPage();
+            Assert.IsFalse(app.Project.TableIsEmpty(true, Administrator));
+            projectBefore = app.API.GetProjectList(Administrator);
 
-            Assert.IsFalse(app.Project.TableIsEmpty(true));
+            app.Navigator.GoToManagmentProjectPage();
         }
 
         [Test]
         public void TestProjectRemove()
         {
-            var oldProjects = app.Project.GetProjectList();
+            app.Project.Remove(projectBefore[0]);
 
-            app.Project.Remove(oldProjects[0]);
-
-            var actualProjects = app.Project.GetProjectList();
+            var actualProjects = app.API.GetProjectList(Administrator);
             actualProjects.Sort();
 
-            oldProjects.RemoveAt(0);
-            oldProjects.Sort();
+            projectBefore.RemoveAt(0);
+            projectBefore.Sort();
 
-            Assert.AreEqual(oldProjects, actualProjects);
+            Assert.AreEqual(projectBefore, actualProjects);
         }
     }
 }
